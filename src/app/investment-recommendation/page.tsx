@@ -19,7 +19,7 @@ export default function InvestmentRecommendation() {
       <Header2 />
       <div className="p-4">
         <RoboIcon message="Thank you for answering my questions! Now I have a much better understanding of your needs." />
-        <h1 className="text-2xl font-bold mb-4">Here's your investment recommendation, Raj</h1>
+        <h1 className="text-2xl font-bold mb-4">Here&apos;s your investment recommendation, Raj</h1>
         <RecommendationDetails />
         <AssetAllocation />
         <div className="flex justify-between mt-4">

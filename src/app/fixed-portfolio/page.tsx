@@ -80,7 +80,7 @@ const NavigatePortfolio = () => {
       <div className='flex flex-col'>
         <div className='justify-start'>
             <h2 className='text-lg font-bold'>Allocation Adjusted</h2>
-            <p>We've increased allocation to small cap funds in your portfolio for growth prospects</p>
+            <p>We&apos;ve increased allocation to small cap funds in your portfolio for growth prospects</p>
         </div>
         <div className='justify-start'>
             <h2 className='text-lg font-bold'>Portfolio Diversity</h2>

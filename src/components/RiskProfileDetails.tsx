@@ -17,7 +17,7 @@ const RiskProfileDetails = () => {
       
       <div className="mb-4">
         <p className="font-bold">Your Investment Style</p>
-        <p>As an Explorer, you're willing to take calculated risks for potentially higher returns. You understand market fluctuations and are comfortable with some volatility in your portfolio.</p>
+        <p>As an Explorer, you&apos;re willing to take calculated risks for potentially higher returns. You understand market fluctuations and are comfortable with some volatility in your portfolio.</p>
       </div>
       
       <div className="mb-4">
