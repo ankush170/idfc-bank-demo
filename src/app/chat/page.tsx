@@ -1,27 +1,290 @@
-"use client"
+"use client";
 
-import React, { useState, useEffect, useRef } from 'react';
-import ReactMarkdown from 'react-markdown';
-import { FaRobot, FaUser } from 'react-icons/fa';
-import { useRouter } from 'next/navigation';
-import RoboIcon from '@/components/RoboIcon';
+import React, { useState, useEffect, useRef } from "react";
+import ReactMarkdown from "react-markdown";
+import { FaRobot, FaUser } from "react-icons/fa";
+import { useRouter } from "next/navigation";
+import HeaderChat from "@/components/HeaderChat";
+import PieChartDisplay from "@/components/PieChartDisplay";
+import ImageDisplay from "@/components/ImageDisplay";
+import LoadingScreen from "@/components/LoadingScreen";
 
 interface Message {
-  sender: 'bot' | 'user';
+  sender: "bot" | "user" | "button" | "pieChart" | "image" | "slider";
   content: string;
   fullyTyped: boolean;
+  options?: string[];
+  chartData?: { name: string; value: number }[];
+  imageSrc?: string;
+  sliderMax?: number;
 }
 
 export default function ChatPage() {
   const [messages, setMessages] = useState<Message[]>([]);
-  const [showInitialButtons, setShowInitialButtons] = useState(false);
-  const [showFinalButtons, setShowFinalButtons] = useState(false);
+  const [userInput, setUserInput] = useState("");
+  const [currentStep, setCurrentStep] = useState(0);
+  const [showLoading, setShowLoading] = useState(false);
+  const [loadingText, setLoadingText] = useState("");
+  const [sliderValue, setSliderValue] = useState(0);
   const messagesEndRef = useRef<null | HTMLDivElement>(null);
   const router = useRouter();
 
-  const initialMessages = [
-    "Hey there! I see you're deliberating rebalancing your portfolio. We have recommended you to fix your allocation and diversify holdings. What can I help you with?"
+  const conversationFlow: Message[] = [
+    {
+      sender: "bot",
+      content:
+        "Hey there! I see you'd like my help fixing your portfolio. Here's your current investment split -",
+      fullyTyped: false,
+    },
+    {
+        sender: "bot",
+        content: "",
+        fullyTyped : true,
+    },
+    {
+      sender: "pieChart",
+      content: "",
+      chartData: [
+        { name: "Stocks", value: 25 },
+        { name: "Funds", value: 40 },
+        { name: "Cash", value: 35 },
+      ],
+      fullyTyped: true,
+    },
+    {
+      sender: "bot",
+      content:
+        "I have analyzed your holdings and here is what I suggest you change.",
+      fullyTyped: false,
+    },
+    {
+      sender: "button",
+      content: "",
+      options: [
+        "Excess holdings in cash",
+        "Sectoral and market cap concentration in mutual funds holdings",
+        "Underperforming funds",
+      ],
+      fullyTyped: true,
+    },
+    {
+      sender: "bot",
+      content: "What would you like me to fix first?",
+      fullyTyped: false,
+    },
+    { sender: "user", content: "", fullyTyped: true },
+    {
+      sender: "bot",
+      content:
+        "I have noticed you have Rs. 675,000 cash balance. You're losing out on returns by keeping this amount parked in a low yield savings account. Do you need to use this amount in the near term?",
+      fullyTyped: false,
+    },
+    { sender: "user", content: "", fullyTyped: true },
+    {
+      sender: "bot",
+      content:
+        "Understood! I suggest moving these funds into a liquid fund for the near term to optimize returns. Here are 3 funds I suggest. Which one would you like to invest in?",
+      fullyTyped: false,
+    },
+    {
+      sender: "button",
+      content: "",
+      options: [
+        "ICICI Prudential Liquid Fund- Growth",
+        "SBI Liquid Fund- Growth",
+        "Mirae Asset Liquid Fund- Growth",
+      ],
+      fullyTyped: true,
+    },
+    { sender: "user", content: "", fullyTyped: true },
+    {
+      sender: "bot",
+      content: "Got it! How much would you like to invest?",
+      fullyTyped: false,
+    },
+    { sender: "user", content: "", fullyTyped: true },
+    { sender: "bot", content: "Loading...", fullyTyped: false },
+    {
+      sender: "bot",
+      content:
+        "I've invested Rs. 5,00,000 into ICICI Prudential Liquid Fund – Growth on your behalf. What would you like to handle next?",
+      fullyTyped: false,
+    },
+    {
+      sender: "button",
+      content: "",
+      options: [
+        "Sectoral and market cap concentration in mutual funds holdings",
+        "Underperforming funds",
+      ],
+      fullyTyped: true,
+    },
+    { sender: "user", content: "", fullyTyped: true },
+    {
+      sender: "bot",
+      content:
+        "After analyzing your mutual funds portfolio, it appears you have ~19% exposure to the Telecom sector. Concentrated market exposure in any single sector can result in substantial losses if that sector experiences a downturn. Would you like me to reallocate some of the funds into other areas?",
+      fullyTyped: false,
+    },
+    {
+      sender: "pieChart",
+      content: "",
+      chartData: [
+        { name: "Telecom", value: 19 },
+        { name: "IT", value: 14 },
+        { name: "FMCG", value: 12 },
+        { name: "Commodities", value: 10 },
+        { name: "Pharma", value: 7 },
+      ],
+      fullyTyped: true,
+    },
+    { sender: "user", content: "", fullyTyped: true },
+    {
+      sender: "bot",
+      content:
+        "While we're on that topic, I understand you're a moderately aggressive investor. However, you only have 5% allocation into small cap funds. Small cap investments are riskier but will provide opportunity for high returns over the long term by investing in small, rapidly growing companies that may become future market leaders. I have curated 3 funds which will help address this issue. Which one would you like to invest in?",
+      fullyTyped: false,
+    },
+    {
+      sender: "button",
+      content: "",
+      options: [
+        "Nippon India Small Cap Fund - Growth",
+        "Invesco India Small Cap Fund- Growth",
+        "HDFC Small Cap Fund- Growth",
+      ],
+      fullyTyped: true,
+    },
+    { sender: "user", content: "", fullyTyped: true },
+    { sender: "bot", content: "Of course! Here you go…", fullyTyped: false },
+    { sender: "image", content: "", imageSrc: "/hdfc.png", fullyTyped: true },
+    {
+      sender: "bot",
+      content: "Would you like me to invest in this fund for you?",
+      fullyTyped: false,
+    },
+    { sender: "user", content: "", fullyTyped: true },
+    { sender: "bot", content: "Loading...", fullyTyped: false },
+    {
+      sender: "bot",
+      content: "All set! What other issue would you like me to address?",
+      fullyTyped: false,
+    },
+    {
+      sender: "button",
+      content: "",
+      options: ["Underperforming Funds"],
+      fullyTyped: true,
+    },
+    { sender: "user", content: "", fullyTyped: true },
+    {
+      sender: "bot",
+      content:
+        "While analysing your portfolio, I noticed one fund which has been underperforming against benchmark. Axis Bluechip Fund- Growth has a 5 year CAGR of 14.5% and you&apos;ve missed out on an additional Rs 8450 in returns. Here are some other options I recommend you invest in –",
+      fullyTyped: false,
+    },
+    {
+      sender: "image",
+      content: "",
+      imageSrc: "/investment_options.png",
+      fullyTyped: true,
+    },
+    {
+      sender: "bot",
+      content: "Which one would you like to invest in?",
+      fullyTyped: false,
+    },
+    {
+      sender: "button",
+      content: "",
+      options: [
+        "Nippon India Large Cap Fund- Growth",
+        "Canara Robeco Bluechip Equity Fund- Growth",
+        "Kotak Bluechip Fund- Growth",
+      ],
+      fullyTyped: true,
+    },
+    { sender: "user", content: "", fullyTyped: true },
+    { sender: "bot", content: "Loading...", fullyTyped: false },
+    {
+      sender: "bot",
+      content: "All set! Anything else you need my help with?",
+      fullyTyped: false,
+    },
+    { sender: "user", content: "", fullyTyped: true },
+    {
+      sender: "bot",
+      content: "Of course! Here&apos;s your updated investment split..",
+      fullyTyped: false,
+    },
+    {
+      sender: "pieChart",
+      content: "",
+      chartData: [
+        { name: "Stocks", value: 25 },
+        { name: "Funds", value: 70 },
+        { name: "Cash", value: 5 },
+      ],
+      fullyTyped: true,
+    },
+    {
+      sender: "bot",
+      content: "Anything else I can help you with?",
+      fullyTyped: false,
+    },
+    { sender: "user", content: "", fullyTyped: true },
+    {
+      sender: "bot",
+      content: "Alright! Let&apos;s take a look at your fixed portfolio now..",
+      fullyTyped: false,
+    },
   ];
+
+  useEffect(() => {
+    if (currentStep < conversationFlow.length) {
+      setTimeout(() => {
+        handleNextStep();
+      }, 1000);
+    }
+  }, [currentStep]);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "instant" });
+  }, [messages]);
+
+  const handleNextStep = async () => {
+    if (currentStep >= conversationFlow.length) {
+      router.push("/fixed-portfolio");
+      return;
+    }
+
+    const currentMessage = conversationFlow[currentStep];
+
+    if (currentMessage.sender === "bot") {
+      if (currentMessage.content === "Loading...") {
+        handleLoadingScreen();
+      } else {
+        setMessages((prev) => [...prev, { ...currentMessage, content: "" }]);
+        await typeMessage(currentMessage);
+        if (currentStep === conversationFlow.length - 1) {
+          // This is the last message
+          setTimeout(() => {
+            router.push("/fixed-portfolio");
+          }, 2000); // Wait 2 seconds after the last message before navigating
+        } else {
+          setCurrentStep((prev) => prev + 1);
+        }
+      }
+    } else if (
+      ["button", "pieChart", "image"].includes(currentMessage.sender)
+    ) {
+      setMessages((prev) => [...prev, currentMessage]);
+      setCurrentStep((prev) => prev + 1);
+    } else if (currentMessage.sender === "user") {
+      // Wait for user input
+      return;
+    }
+  };
 
   const typeMessage = (message: Message): Promise<void> => {
     return new Promise((resolve) => {
@@ -29,119 +292,160 @@ export default function ChatPage() {
       const interval = setInterval(() => {
         i++;
         if (i <= message.content.length) {
-          setMessages(prev => 
-            prev.map((msg, index) => 
-              index === prev.length - 1 ? { ...msg, content: message.content.slice(0, i) } : msg
+          setMessages((prev) =>
+            prev.map((msg, index) =>
+              index === prev.length - 1
+                ? { ...msg, content: message.content.slice(0, i) }
+                : msg
             )
           );
         } else {
           clearInterval(interval);
-          setMessages(prev => 
-            prev.map((msg, index) => 
+          setMessages((prev) =>
+            prev.map((msg, index) =>
               index === prev.length - 1 ? { ...msg, fullyTyped: true } : msg
             )
           );
           resolve();
         }
-      }, 20);
+      }, 40);
     });
   };
 
-  const typeInitialMessages = async () => {
-    for (const msg of initialMessages) {
-      setMessages(prev => [...prev, { sender: 'bot', content: '', fullyTyped: false }]);
-      await typeMessage({ sender: 'bot', content: msg, fullyTyped: false });
+  const handleUserInput = (input: string) => {
+    setMessages((prev) => [
+      ...prev,
+      { sender: "user", content: input, fullyTyped: true },
+    ]);
+    setUserInput("");
+    setCurrentStep((prev) => prev + 1);
+  };
+
+  const handleButtonClick = (option: string) => {
+    handleUserInput(option);
+  };
+
+  const handleSliderSubmit = () => {
+    handleUserInput(`₹${sliderValue.toLocaleString()}`);
+  };
+
+  const handleLoadingScreen = () => {
+    setShowLoading(true);
+    setLoadingText(getLoadingText());
+    setTimeout(() => {
+      setShowLoading(false);
+      setCurrentStep((prev) => prev + 1);
+    }, 3500);
+  };
+
+  const getLoadingText = () => {
+    switch (currentStep) {
+      case 13:
+        return "Moving free cash into liquid funds";
+      case 27:
+        return "Fixing sectoral allocation, Increasing small cap exposure";
+      case 36:
+        return "Switching Funds to better performing portfolio";
+      default:
+        return "Loading...";
     }
-    setShowInitialButtons(true);
-  };
-
-  useEffect(() => {
-    typeInitialMessages();
-  }, []);
-
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
-
-  const handleButtonClick = async (message: string) => {
-    // Add user message immediately without typing effect
-    setMessages(prev => [...prev, { sender: 'user', content: message, fullyTyped: true }]);
-    setShowInitialButtons(false);
-
-    let botResponse = '';
-    if (message === 'Why do I need to rebalance?') {
-      botResponse = 'Rebalancing helps to maintain your desired level of asset allocation. It ensures that your portfolio does not become too risky or too conservative.';
-    } else if (message === 'Why do I need to fix my allocation?') {
-      botResponse = 'Your allocation in small cap funds is lower than suggested based on your risk profile. Small cap investments are riskier but will provide opportunity for high returns over the long term by investing in small, rapidly growing companies that may become future market leaders.';
-    } else if (message === 'Why do I need to diversify?') {
-      botResponse = 'Diversifying your portfolio helps spread out risk. By investing in a variety of assets, you can protect your portfolio against the volatility of any single asset.';
-    }
-
-    // Add bot message with typing effect
-    setMessages(prev => [...prev, { sender: 'bot', content: '', fullyTyped: false }]);
-    await typeMessage({ sender: 'bot', content: botResponse, fullyTyped: false });
-    
-    setShowFinalButtons(true);
-  };
-
-  const handleYesClick = () => {
-    router.push('/fix-portfolio');
-  };
-
-  const handleNoClick = async () => {
-    setShowFinalButtons(false);
-    setMessages(prev => [...prev, { sender: 'bot', content: '', fullyTyped: false }]);
-    await typeMessage({ sender: 'bot', content: 'What else can I help you with?', fullyTyped: false });
-    setShowInitialButtons(true);
   };
 
   return (
-    <div className="fixed inset-0 bg-white z-50 flex flex-col p-4">
-      <div className="flex-1 overflow-y-auto mb-4 space-y-4">
-        <div className="flex mb-4">
-          <RoboIcon message="I am j.A.R.V.I.S, your personal assistant" />
-        </div>
-        {messages.map((msg, index) => (
-          <div key={index} className={`flex ${msg.sender === 'bot' ? 'justify-start' : 'justify-end'}`}>
-            {msg.sender === 'bot' && <FaRobot className="mr-2 mt-1 text-blue-500" />}
-            <div className={`max-w-[70%] ${msg.sender === 'user' ? 'bg-red-500 text-white p-2 rounded-lg' : 'bg-gray-100 p-2 rounded-lg'}`}>
-              <ReactMarkdown>{msg.content}</ReactMarkdown>
-              {msg.sender === 'bot' && !msg.fullyTyped && <span className="inline-block w-1 h-4 bg-black animate-blink" />}
-            </div>
-            {msg.sender === 'user' && <FaUser className="ml-2 mt-1 text-green-500" />}
-          </div>
-        ))}
-        {showInitialButtons && (
-          <div className="flex flex-col space-y-2 mb-4 items-start pl-8"> {/* Added pl-8 for left padding */}
-            {['Why do I need to rebalance?', 'Why do I need to fix my allocation?', 'Why do I need to diversify?'].map((text, index) => (
-              <button
+    <div className="fixed inset-0 flex flex-col">
+      <HeaderChat />
+      {showLoading ? (
+        <LoadingScreen loadingText={loadingText} />
+      ) : (
+        <div className="flex-1 bg-white flex flex-col p-4 overflow-hidden">
+          <div className="flex-1 overflow-y-auto mb-16 space-y-4">
+            {messages.map((msg, index) => (
+              <div
                 key={index}
-                onClick={() => handleButtonClick(text)}
-                className="p-1 rounded bg-white text-red-500 border border-red-500 text-sm" // Made buttons smaller
+                className={`flex ${
+                  msg.sender === "bot" ||
+                  msg.sender === "button" ||
+                  msg.sender === "pieChart" ||
+                  msg.sender === "image" ||
+                  msg.sender === "slider"
+                    ? "justify-start"
+                    : "justify-end"
+                }`}
               >
-                {text}
-              </button>
+                {msg.sender === "bot" && (
+                  <FaRobot className="mr-2 mt-1 text-blue-500" />
+                )}
+                {msg.sender === "pieChart" && msg.chartData && (
+                  <PieChartDisplay data={msg.chartData} />
+                )}
+                {msg.sender === "image" && <ImageDisplay src={msg.imageSrc!} />}
+                {msg.sender === "button" && (
+                  <div className="flex flex-col space-y-2 max-w-[70%]">
+                    {msg.options!.map((option, i) => (
+                      <button
+                        key={i}
+                        onClick={() => handleButtonClick(option)}
+                        className="p-2 ml-5 rounded-xl bg-white text-black border border-gray-300 hover:bg-[#EF5350] hover:text-white text-left w-auto"
+                      >
+                        {option}
+                      </button>
+                    ))}
+                  </div>
+                )}
+                {msg.sender === "slider" && (
+                  <div className="flex flex-col space-y-2 max-w-[70%]">
+                    <input
+                      type="range"
+                      min="0"
+                      max={msg.sliderMax}
+                      value={sliderValue}
+                      onChange={(e) => setSliderValue(Number(e.target.value))}
+                      className="w-full"
+                    />
+                    <div>Selected amount: ₹{sliderValue.toLocaleString()}</div>
+                    <button
+                      onClick={handleSliderSubmit}
+                      className="p-2 rounded-lg bg-[#EF5350] text-white"
+                    >
+                      Continue
+                    </button>
+                  </div>
+                )}
+                {(msg.sender === "bot" || msg.sender === "user") && (
+                  <div
+                    className={`max-w-[70%] ${
+                      msg.sender === "user"
+                        ? "bg-[#EF5350] text-white p-2 rounded-xl"
+                        : "bg-gray-100 p-2 rounded-xl"
+                    }`}
+                  >
+                    <ReactMarkdown>{msg.content}</ReactMarkdown>
+                    {msg.sender === "bot" && !msg.fullyTyped && (
+                      <span className="inline-block w-1 h-4 bg-black animate-blink" />
+                    )}
+                  </div>
+                )}
+                {msg.sender === "user" && (
+                  <FaUser className="ml-2 mt-1 text-green-500" />
+                )}
+              </div>
             ))}
+            <div ref={messagesEndRef} />
           </div>
-        )}
-        {showFinalButtons && (
-          <div className="flex flex-col space-y-2 mb-4 items-start pl-8"> {/* Added pl-8 for left padding */}
-            <button
-              onClick={handleYesClick}
-              className="p-1 rounded bg-red-500 text-white text-sm" // Made button smaller
-            >
-              Yes, fix my portfolio
-            </button>
-            <button
-              onClick={handleNoClick}
-              className="p-1 rounded bg-white text-red-500 border border-red-500 text-sm" // Made button smaller
-            >
-              No, I have more questions
-            </button>
+          <div className="fixed bottom-0 left-0 right-0 p-4 bg-white">
+            <input
+              type="text"
+              value={userInput}
+              onChange={(e) => setUserInput(e.target.value)}
+              onKeyPress={(e) =>
+                e.key === "Enter" && handleUserInput(userInput)
+              }
+              className="w-full p-2 border rounded"
+              placeholder="Type your message..."
+            />
           </div>
-        )}
-        <div ref={messagesEndRef} />
-      </div>
+        </div>
+      )}
     </div>
   );
 }

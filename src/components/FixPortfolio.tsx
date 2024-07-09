@@ -34,10 +34,13 @@ const FixPortfolio = () => {
     setTimeout(() => {
       setReinvestStatus('fetched')
       setShowContinue(true)
+      setTimeout(() => {
+        router.push('/fixed-portfolio')
+      }, 2000)
     }, 5500)
 
     return () => clearInterval(timer)
-  }, [])
+  }, [router])
 
   const getStatusIcon = (status: string) => {
     if (status === 'pending') return '🕒'
@@ -56,12 +59,12 @@ const FixPortfolio = () => {
       <h2 className="text-xl font-bold mb-4">Fixing your Portfolio</h2>
 
       <div className=''>
-      <div className="w-full max-w-md bg-gray-200 rounded-full h-2.5 mb-4">
-            <div
-              className="bg-blue-600 h-2.5 rounded-full"
-              style={{ width: `${progress}%` }}
-            ></div>
-      </div>
+        <div className="w-full max-w-md bg-gray-200 rounded-full h-2.5 mb-4">
+          <div
+            className="bg-blue-600 h-2.5 rounded-full"
+            style={{ width: `${progress}%` }}
+          ></div>
+        </div>
 
         <div className="w-full max-w-md">
           {[
@@ -83,15 +86,6 @@ const FixPortfolio = () => {
           ))}
         </div>
       </div>
-      
-        {showContinue && (
-          <button
-            onClick={() => router.push('/fixed-portfolio')}
-            className="mt-8 bg-red-500 text-white px-6 py-2 rounded"
-          >
-            Continue
-          </button>
-        )}
     </div>
   )
 }

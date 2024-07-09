@@ -7,7 +7,7 @@ export default function RiskAssessment() {
     <div className="flex min-h-screen flex-col">
       <Header2 />
       <div className='p-4'>
-        <RoboIcon message="Help me with a few more details before I can understand your risk profile…" />
+        <RoboIcon message="Hi Raj! I&apos;m j.A.R.V.I.S. Help me with a few more details before I can understand your risk profile…" />
       </div>
       <div className='p-4'>
         <h1 className="text-2xl font-bold mb-2">What are you willing to risk to potentially gain returns?</h1>

@@ -1,14 +1,14 @@
 "use client"
 
 import { useState } from 'react'
-import { EyeSlashIcon, CreditCardIcon } from '@heroicons/react/24/outline'
+import { EyeSlashIcon, CreditCardIcon, EyeIcon } from '@heroicons/react/24/outline'
 
 export default function BankBalanceCard() {
   const [isFlipped, setIsFlipped] = useState(false)
 
   return (
     <div
-      className={`w-1/2 h-56 bg-[#EF9A9A] shadow-md rounded-lg p-4 cursor-pointer ${
+      className={`w-1/2 h-56 bg-[#EF9A9A] shadow-md rounded-lg p-4 cursor-pointer relative ${
         isFlipped ? 'transform bg-white rotate-y-180' : ''
       }`}
       onClick={() => setIsFlipped(!isFlipped)}
@@ -23,17 +23,28 @@ export default function BankBalanceCard() {
           <p className="text-sm">Available Balance</p>
           <p className="text-sm mt-2">Interest Earned</p>
           <p className="text-lg font-semibold">₹50,000</p>
-          <EyeSlashIcon 
-            className="h-6 w-6 absolute top-2 right-2"
+          <div
+            className="eye-icon absolute top-2 right-2"
             onClick={(e) => {
               e.stopPropagation()
               setIsFlipped(false)
             }}
-          />
+          >
+            <EyeSlashIcon className="h-6 w-6" />
+          </div>
         </div>
       ) : (
-        <div className="flex items-center justify-center h-full">
-          <p className="text-lg font-semibold">View Your Bank Balance</p>
+        <div className="flex flex-col items-center justify-center h-full">
+          <div
+            className="eye-icon absolute top-2 right-2"
+            onClick={(e) => {
+              e.stopPropagation()
+              setIsFlipped(true)
+            }}
+          >
+            <EyeIcon className="h-6 w-6" />
+          </div>
+          <p className="text-lg font-semibold">Your Bank Balance</p>
         </div>
       )}
     </div>

@@ -27,7 +27,7 @@ const RiskSlider: React.FC = () => {
         className="w-full"
       />
       <div className="absolute bottom-0 left-0 w-full">
-        <div className="h-0 w-0 border-l-[10px] border-l-transparent border-t-[20px] border-t-red-500 border-r-[10px] border-r-transparent" style={{ left: `${risk}%` }}></div>
+        <div className="h-0 w-0 border-l-[10px] border-l-transparent border-t-[20px] border-t-[#EF5350] border-r-[10px] border-r-transparent" style={{ left: `${risk}%` }}></div>
       </div>
     </div>
   );

@@ -31,10 +31,13 @@ const FetchHoldings = () => {
     setTimeout(() => {
       setBondsStatus('fetched')
       setShowContinue(true)
+      setTimeout(() => {
+        router.push('/heldaway-portfolio')
+      }, 2000)
     }, 5000)
 
     return () => clearInterval(timer)
-  }, [])
+  }, [router])
 
   const getStatusIcon = (status: string) => {
     if (status === 'pending') return '🕒'
@@ -55,7 +58,7 @@ const FetchHoldings = () => {
       <h2 className="text-xl font-bold mb-4">Fetching your heldaways</h2>
       
       <div className="w-full max-w-md bg-gray-200 rounded-full h-2.5 mb-4">
-        <div className="bg-red-500 h-2.5 rounded-full" style={{ width: `${progress}%` }}></div>
+        <div className="bg-[#EF5350] h-2.5 rounded-full" style={{ width: `${progress}%` }}></div>
       </div>
 
       <div className="w-full max-w-md">
@@ -70,15 +73,6 @@ const FetchHoldings = () => {
           </div>
         ))}
       </div>
-
-      {showContinue && (
-        <button 
-          onClick={() => router.push('/heldaway-portfolio')} 
-          className="mt-8 bg-red-500 text-white px-6 py-2 rounded"
-        >
-          Continue
-        </button>
-      )}
     </div>
   )
 }

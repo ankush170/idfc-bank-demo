@@ -20,7 +20,7 @@ export default function ConsentPage() {
       <div className="bg-white p-8 rounded-lg shadow-md max-w-md w-full">
         <RoboIcon message="Help me consolidate your investments" />
         <p className="mt-4 mb-6 text-center">
-          Before we can offer advice, would you like me to bring in your externally held assets so I can better understand the whole picture?
+          Before you invest more, would you like me to bring in your externally held assets so I can better understand the whole picture?
         </p>
         <div className="flex justify-center space-x-4">
           <button

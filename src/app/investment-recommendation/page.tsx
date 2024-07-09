@@ -28,7 +28,7 @@ export default function InvestmentRecommendation() {
             onClick={handleInvestNowClick} 
             className="bg-[#EF5350] text-white px-4 py-2 rounded"
           >
-            Invest Now
+            Continue
           </button>
         </div>
       </div>

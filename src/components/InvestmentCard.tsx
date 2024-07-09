@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import { PieChart, Pie, Cell } from "recharts";
-import { EyeSlashIcon } from "@heroicons/react/24/outline";
+import { EyeSlashIcon, EyeIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const data = [{ value: 16 }];
 
@@ -14,7 +15,7 @@ export default function InvestmentCard() {
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (isFlipped) {
       const target = e.target as HTMLElement;
-      if (!target.closest(".eye-slash-icon")) {
+      if (!target.closest(".eye-icon")) {
         router.push("/risk-assessment");
       }
     } else {
@@ -24,7 +25,7 @@ export default function InvestmentCard() {
 
   return (
     <div
-      className={`w-1/2 h-56 bg-[#EF9A9A] shadow-md rounded-lg p-4 cursor-pointer ${
+      className={`w-1/2 h-56 bg-[#EF9A9A] shadow-md rounded-lg p-4 cursor-pointer relative ${
         isFlipped ? "transform bg-white rotate-y-180" : ""
       }`}
       onClick={handleClick}
@@ -55,11 +56,15 @@ export default function InvestmentCard() {
               <span className="text-xs">Lakhs</span>
             </div>
           </div>
-          <p className="text-sm">Combined Value</p>
-          <p className="text-sm mt-2">Next Milestone</p>
-          <p className="text-lg font-semibold">₹20,00,000</p>
+          <p className="text-sm mt-[-3] mb-1">Combined Value</p>
+          <Link
+            href="/risk-assessment"
+            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+          >
+            Invest more
+          </Link>
           <div
-            className="eye-slash-icon absolute top-2 right-2"
+            className="eye-icon absolute top-2 right-2"
             onClick={(e) => {
               e.stopPropagation();
               setIsFlipped(false);
@@ -69,7 +74,16 @@ export default function InvestmentCard() {
           </div>
         </div>
       ) : (
-        <div className="flex items-center justify-center h-full">
+        <div className="flex flex-col items-center justify-center h-full">
+          <div
+            className="eye-icon absolute top-2 right-2"
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsFlipped(true);
+            }}
+          >
+            <EyeIcon className="h-6 w-6" />
+          </div>
           <p className="text-lg font-semibold">Your Investments</p>
         </div>
       )}

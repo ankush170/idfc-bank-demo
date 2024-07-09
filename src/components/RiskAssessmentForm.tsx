@@ -17,7 +17,7 @@ const RiskAssessmentForm = () => {
     <div className="p-4 max-w-md mx-auto">
       <div className="mb-4 flex justify-between items-center">
         <span>I am willing to risk a loss of:</span>
-        <span className="text-red-500 font-bold">₹ {risk * 1000}</span>
+        <span className="text-[#EF5350] font-bold">₹ {risk * 1000}</span>
       </div>
       <div className="mb-4 flex justify-between items-center">
         <span>To potentially gain:</span>
@@ -36,7 +36,7 @@ const RiskAssessmentForm = () => {
       <div className="mb-4">
         <div className="h-4 bg-gray-200 rounded-full overflow-hidden">
           <div 
-            className="h-full bg-red-500" 
+            className="h-full bg-[#EF5350]" 
             style={{width: `${risk}%`}}
           ></div>
         </div>

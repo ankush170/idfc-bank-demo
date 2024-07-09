@@ -22,7 +22,7 @@ const RiskProfileDetails = () => {
       
       <div className="mb-4">
         <p className="font-bold">Factors influencing your risk profile:</p>
-        {['Financial Knowledge', 'Risk Sensitivity', 'Greed'].map((factor, index) => (
+        {['Financial Knowledge', 'Risk Sensitivity', 'Risk Aversion'].map((factor, index) => (
           <div key={index} className="mb-2">
             <p>{factor}</p>
             <ProgressBar value={(3 - index) * 30} max={100} />
