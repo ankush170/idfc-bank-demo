@@ -1,36 +1,33 @@
 "use client"
 
 import { useState } from 'react'
-import { Bars3Icon, MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { Bars3Icon, ChevronLeftIcon, MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/24/solid'
+import SearchInput from './SearchInput'
+import { TfiHeadphoneAlt } from 'react-icons/tfi'
+import { Button, IconButton } from '@material-tailwind/react'
+import { useRouter } from 'next/navigation'
 
-export default function Header() {
+interface HeaderProps{
+  title?: string
+}
+
+export default function Header({title}: HeaderProps) {
   const [isSearchOpen, setIsSearchOpen] = useState(false)
+  const router = useRouter()
 
   return (
-    <header className="bg-[#EF5350] text-white p-4 flex items-center justify-between">
-      <Bars3Icon className="h-6 w-6 mr-4" />
-      {isSearchOpen ? (
-        <div className="flex-1 flex items-center">
-          <input
-            type="text"
-            placeholder="Search..."
-            className="flex-1 bg-white text-black px-2 py-1 rounded-l"
-          />
-          <button 
-            className="bg-white text-black px-2 py-1 rounded-r"
-            onClick={() => setIsSearchOpen(false)}
-          >
-            <XMarkIcon className="h-6 w-6" />
-          </button>
-        </div>
-      ) : (
-        <>
-          <MagnifyingGlassIcon
-            className="h-6 w-6 cursor-pointer"
-            onClick={() => setIsSearchOpen(true)}
-          />
-        </>
-      )}
+    <header className="px-4 py-2 flex space-between items-center justify-between rounded-bl-header rounded-br-header shadow">
+      <div className='flex items-center'>
+        <IconButton variant='text' className='rounded-full' onClick={router.back}>
+          <ChevronLeftIcon className="h-6 w-6 text-primary" />
+        </IconButton>
+        <div className='text-black'>{title}</div>
+      </div>
+
+
+      <IconButton variant='text' className='rounded-full'>
+        <MagnifyingGlassIcon className='text-primary h-4 w-4' />
+      </IconButton>
     </header>
   )
 }

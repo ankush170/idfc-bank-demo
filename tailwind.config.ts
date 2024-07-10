@@ -27,9 +27,10 @@ const config = {
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+        black: 'rgba(34, 34, 34, 1)',
         primary: {
           DEFAULT: "var(--primary)",
-          foreground: "hsl(var(--primary-foreground))",
+          foreground: "hsl(var(--primary-foreground))"
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
@@ -60,6 +61,7 @@ const config = {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+        header: "24px"
       },
       keyframes: {
         "accordion-down": {
@@ -75,6 +77,15 @@ const config = {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
+      backgroundImage: {
+        'primary-light-gradient': "linear-gradient(126.03deg, rgba(176, 85, 93, 0.1425) 6.51%, rgba(176, 85, 93, 0.38) 94.56%, rgba(176, 85, 93, 0.361) 95.02%)",
+        'secondary-dark-gradient': "linear-gradient(282.75deg, #123681 0%, #1948AA 90.37%)",
+        'primary-dark-gradient': "linear-gradient(58.71deg, #CE623E 37.8%, #A64627 99.54%)",
+        'purple-gradient': 'linear-gradient(246.56deg, #CFBEEC -5.56%, rgba(207, 190, 236, 0.0001) 222.45%)'
+      },
+      boxShadow: {
+        'default': '0px 0px 4px 1px rgba(0, 0, 0, 0.15)'
+      }
     },
   },
   plugins: [require("tailwindcss-animate")],

@@ -5,7 +5,7 @@ import RoboIcon from '@/components/RoboIcon'
 export default function RiskAssessment() {
   return (
     <div className="flex min-h-screen flex-col">
-      <Header2 />
+      <Header2 title='Investment Analysis' />
       <div className='p-4'>
         <RoboIcon message="Hi Raj! I&apos;m J.A.R.V.I.S. Help me with a few more details before I can understand your risk profile…" />
       </div>
