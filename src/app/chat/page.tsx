@@ -38,11 +38,6 @@ export default function ChatPage() {
       timestamp: new Date(),
     },
     {
-      sender: "bot",
-      content: "",
-      fullyTyped: true,
-    },
-    {
       sender: "pieChart",
       content: "",
       chartData: [
@@ -379,11 +374,11 @@ export default function ChatPage() {
 
   const getLoadingText = () => {
     switch (currentStep) {
-      case 14:
+      case 13:
         return "Moving free cash into liquid funds";
-      case 28:
+      case 27:
         return "Fixing sectoral allocation, Increasing small cap exposure";
-      case 37:
+      case 36:
         return "Switching Funds to better performing portfolio";
       default:
         return "J.A.R.V.I.S is computing..";

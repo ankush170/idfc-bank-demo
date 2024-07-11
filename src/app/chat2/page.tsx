@@ -28,11 +28,6 @@ export default function SimpleChat() {
       timestamp: new Date(),
     },
     {
-      sender: "bot",
-      content: "",
-      fullyTyped: true,
-    },
-    {
       sender: "button",
       content: "",
       options: [
