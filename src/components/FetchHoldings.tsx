@@ -46,6 +46,7 @@ const FetchHoldings = () => {
   }
 
   return (
+
     <div className="min-h-screen flex flex-col items-center justify-center bg-white p-4">
       <RoboIcon message="Hold on! Let me fetch your holdings..." />
       
@@ -57,6 +58,7 @@ const FetchHoldings = () => {
       
       <h2 className="text-xl font-bold mb-4">Fetching your heldaways</h2>
       
+      <div className=''>
       <div className="w-full max-w-md bg-gray-200 rounded-full h-2.5 mb-4">
         <div className="bg-[#EF5350] h-2.5 rounded-full" style={{ width: `${progress}%` }}></div>
       </div>
@@ -72,6 +74,7 @@ const FetchHoldings = () => {
             </span>
           </div>
         ))}
+      </div>
       </div>
     </div>
   )

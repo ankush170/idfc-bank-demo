@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import ReactMarkdown from "react-markdown";
-import { FaRobot, FaUser } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import HeaderChat from "@/components/HeaderChat";
 import PieChartDisplay from "@/components/PieChartDisplay";
@@ -17,6 +16,7 @@ interface Message {
   chartData?: { name: string; value: number }[];
   imageSrc?: string;
   sliderMax?: number;
+  timestamp?: Date;
 }
 
 export default function ChatPage() {
@@ -35,11 +35,12 @@ export default function ChatPage() {
       content:
         "Hey there! I see you'd like my help fixing your portfolio. Here's your current investment split -",
       fullyTyped: false,
+      timestamp: new Date(),
     },
     {
-        sender: "bot",
-        content: "",
-        fullyTyped : true,
+      sender: "bot",
+      content: "",
+      fullyTyped: true,
     },
     {
       sender: "pieChart",
@@ -56,6 +57,7 @@ export default function ChatPage() {
       content:
         "I have analyzed your holdings and here is what I suggest you change.",
       fullyTyped: false,
+      timestamp: new Date(),
     },
     {
       sender: "button",
@@ -71,20 +73,23 @@ export default function ChatPage() {
       sender: "bot",
       content: "What would you like me to fix first?",
       fullyTyped: false,
+      timestamp: new Date(),
     },
-    { sender: "user", content: "", fullyTyped: true },
+    { sender: "user", content: "", fullyTyped: true, timestamp: new Date() },
     {
       sender: "bot",
       content:
         "I have noticed you have Rs. 675,000 cash balance. You're losing out on returns by keeping this amount parked in a low yield savings account. Do you need to use this amount in the near term?",
       fullyTyped: false,
+      timestamp: new Date(),
     },
-    { sender: "user", content: "", fullyTyped: true },
+    { sender: "user", content: "", fullyTyped: true, timestamp: new Date() },
     {
       sender: "bot",
       content:
         "Understood! I suggest moving these funds into a liquid fund for the near term to optimize returns. Here are 3 funds I suggest. Which one would you like to invest in?",
       fullyTyped: false,
+      timestamp: new Date(),
     },
     {
       sender: "button",
@@ -96,19 +101,21 @@ export default function ChatPage() {
       ],
       fullyTyped: true,
     },
-    { sender: "user", content: "", fullyTyped: true },
+    { sender: "user", content: "", fullyTyped: true, timestamp: new Date() },
     {
       sender: "bot",
       content: "Got it! How much would you like to invest?",
       fullyTyped: false,
+      timestamp: new Date(),
     },
-    { sender: "user", content: "", fullyTyped: true },
+    { sender: "user", content: "", fullyTyped: true, timestamp: new Date() },
     { sender: "bot", content: "Loading...", fullyTyped: false },
     {
       sender: "bot",
       content:
         "I've invested Rs. 5,00,000 into ICICI Prudential Liquid Fund – Growth on your behalf. What would you like to handle next?",
       fullyTyped: false,
+      timestamp: new Date(),
     },
     {
       sender: "button",
@@ -119,12 +126,13 @@ export default function ChatPage() {
       ],
       fullyTyped: true,
     },
-    { sender: "user", content: "", fullyTyped: true },
+    { sender: "user", content: "", fullyTyped: true, timestamp: new Date() },
     {
       sender: "bot",
       content:
         "After analyzing your mutual funds portfolio, it appears you have ~19% exposure to the Telecom sector. Concentrated market exposure in any single sector can result in substantial losses if that sector experiences a downturn. Would you like me to reallocate some of the funds into other areas?",
       fullyTyped: false,
+      timestamp: new Date(),
     },
     {
       sender: "pieChart",
@@ -138,12 +146,13 @@ export default function ChatPage() {
       ],
       fullyTyped: true,
     },
-    { sender: "user", content: "", fullyTyped: true },
+    { sender: "user", content: "", fullyTyped: true, timestamp: new Date() },
     {
       sender: "bot",
       content:
         "While we're on that topic, I understand you're a moderately aggressive investor. However, you only have 5% allocation into small cap funds. Small cap investments are riskier but will provide opportunity for high returns over the long term by investing in small, rapidly growing companies that may become future market leaders. I have curated 3 funds which will help address this issue. Which one would you like to invest in?",
       fullyTyped: false,
+      timestamp: new Date(),
     },
     {
       sender: "button",
@@ -155,20 +164,32 @@ export default function ChatPage() {
       ],
       fullyTyped: true,
     },
-    { sender: "user", content: "", fullyTyped: true },
-    { sender: "bot", content: "Of course! Here you go…", fullyTyped: false },
+    { sender: "user", content: "", fullyTyped: true, timestamp: new Date() },
+    {
+      sender: "bot",
+      content: "Of course! Here you go…",
+      fullyTyped: false,
+      timestamp: new Date(),
+    },
     { sender: "image", content: "", imageSrc: "/hdfc.png", fullyTyped: true },
     {
       sender: "bot",
       content: "Would you like me to invest in this fund for you?",
       fullyTyped: false,
+      timestamp: new Date(),
     },
-    { sender: "user", content: "", fullyTyped: true },
-    { sender: "bot", content: "Loading...", fullyTyped: false },
+    { sender: "user", content: "", fullyTyped: true, timestamp: new Date() },
+    {
+      sender: "bot",
+      content: "Loading...",
+      fullyTyped: false,
+      timestamp: new Date(),
+    },
     {
       sender: "bot",
       content: "All set! What other issue would you like me to address?",
       fullyTyped: false,
+      timestamp: new Date(),
     },
     {
       sender: "button",
@@ -176,12 +197,13 @@ export default function ChatPage() {
       options: ["Underperforming Funds"],
       fullyTyped: true,
     },
-    { sender: "user", content: "", fullyTyped: true },
+    { sender: "user", content: "", fullyTyped: true, timestamp: new Date() },
     {
       sender: "bot",
       content:
         "While analysing your portfolio, I noticed one fund which has been underperforming against benchmark. Axis Bluechip Fund- Growth has a 5 year CAGR of 14.5% and you&apos;ve missed out on an additional Rs 8450 in returns. Here are some other options I recommend you invest in –",
       fullyTyped: false,
+      timestamp: new Date(),
     },
     {
       sender: "image",
@@ -193,6 +215,7 @@ export default function ChatPage() {
       sender: "bot",
       content: "Which one would you like to invest in?",
       fullyTyped: false,
+      timestamp: new Date(),
     },
     {
       sender: "button",
@@ -204,18 +227,25 @@ export default function ChatPage() {
       ],
       fullyTyped: true,
     },
-    { sender: "user", content: "", fullyTyped: true },
-    { sender: "bot", content: "Loading...", fullyTyped: false },
+    { sender: "user", content: "", fullyTyped: true, timestamp: new Date() },
+    {
+      sender: "bot",
+      content: "Loading...",
+      fullyTyped: false,
+      timestamp: new Date(),
+    },
     {
       sender: "bot",
       content: "All set! Anything else you need my help with?",
       fullyTyped: false,
+      timestamp: new Date(),
     },
-    { sender: "user", content: "", fullyTyped: true },
+    { sender: "user", content: "", fullyTyped: true, timestamp: new Date() },
     {
       sender: "bot",
       content: "Of course! Here&apos;s your updated investment split..",
       fullyTyped: false,
+      timestamp: new Date(),
     },
     {
       sender: "pieChart",
@@ -231,12 +261,14 @@ export default function ChatPage() {
       sender: "bot",
       content: "Anything else I can help you with?",
       fullyTyped: false,
+      timestamp: new Date(),
     },
-    { sender: "user", content: "", fullyTyped: true },
+    { sender: "user", content: "", fullyTyped: true, timestamp: new Date() },
     {
       sender: "bot",
       content: "Alright! Let&apos;s take a look at your fixed portfolio now..",
       fullyTyped: false,
+      timestamp: new Date(),
     },
   ];
 
@@ -303,7 +335,9 @@ export default function ChatPage() {
           clearInterval(interval);
           setMessages((prev) =>
             prev.map((msg, index) =>
-              index === prev.length - 1 ? { ...msg, fullyTyped: true } : msg
+              index === prev.length - 1
+                ? { ...msg, fullyTyped: true, timestamp: new Date() }
+                : msg
             )
           );
           resolve();
@@ -315,7 +349,12 @@ export default function ChatPage() {
   const handleUserInput = (input: string) => {
     setMessages((prev) => [
       ...prev,
-      { sender: "user", content: input, fullyTyped: true },
+      {
+        sender: "user",
+        content: input,
+        fullyTyped: true,
+        timestamp: new Date(),
+      },
     ]);
     setUserInput("");
     setCurrentStep((prev) => prev + 1);
@@ -335,19 +374,19 @@ export default function ChatPage() {
     setTimeout(() => {
       setShowLoading(false);
       setCurrentStep((prev) => prev + 1);
-    }, 3500);
+    }, 5000);
   };
 
   const getLoadingText = () => {
     switch (currentStep) {
-      case 13:
+      case 14:
         return "Moving free cash into liquid funds";
-      case 27:
+      case 28:
         return "Fixing sectoral allocation, Increasing small cap exposure";
-      case 36:
+      case 37:
         return "Switching Funds to better performing portfolio";
       default:
-        return "Loading...";
+        return "J.A.R.V.I.S is computing..";
     }
   };
 
@@ -357,7 +396,20 @@ export default function ChatPage() {
       {showLoading ? (
         <LoadingScreen loadingText={loadingText} />
       ) : (
-        <div className="flex-1 bg-white flex flex-col p-4 overflow-hidden">
+        <div className="flex-1 bg-gray-100 flex flex-col p-4 overflow-hidden">
+          <div className="flex items-center justify-start">
+            <img
+              src="/robo_icon.png"
+              width={100}
+              height={100}
+              alt="Robo Icon"
+              className="rounded-full"
+            />
+            <div>
+              <h1 className="font-bold text-2xl">J.A.R.V.I.S</h1>
+              <p>Personal AI Assistant</p>
+            </div>
+          </div>
           <div className="flex-1 overflow-y-auto mb-16 space-y-4">
             {messages.map((msg, index) => (
               <div
@@ -372,9 +424,6 @@ export default function ChatPage() {
                     : "justify-end"
                 }`}
               >
-                {msg.sender === "bot" && (
-                  <FaRobot className="mr-2 mt-1 text-blue-500" />
-                )}
                 {msg.sender === "pieChart" && msg.chartData && (
                   <PieChartDisplay data={msg.chartData} />
                 )}
@@ -385,7 +434,7 @@ export default function ChatPage() {
                       <button
                         key={i}
                         onClick={() => handleButtonClick(option)}
-                        className="p-2 ml-5 rounded-xl bg-white text-black border border-gray-300 hover:bg-[#EF5350] hover:text-white text-left w-auto"
+                        className="p-2 ml-1 rounded-2xl bg-white text-[#9B1E26] border border-[#9B1E26] hover:bg-[#9B1E26] hover:text-white text-left w-auto"
                       >
                         {option}
                       </button>
@@ -413,20 +462,48 @@ export default function ChatPage() {
                 )}
                 {(msg.sender === "bot" || msg.sender === "user") && (
                   <div
-                    className={`max-w-[70%] ${
-                      msg.sender === "user"
-                        ? "bg-[#EF5350] text-white p-2 rounded-xl"
-                        : "bg-gray-100 p-2 rounded-xl"
-                    }`}
+                    className={`flex ${
+                      msg.sender === "user" ? "justify-end" : "justify-start"
+                    } w-full`}
                   >
-                    <ReactMarkdown>{msg.content}</ReactMarkdown>
-                    {msg.sender === "bot" && !msg.fullyTyped && (
-                      <span className="inline-block w-1 h-4 bg-black animate-blink" />
-                    )}
+                    <div className="flex flex-col max-w-[70%]">
+                      <div
+                        className={`${
+                          msg.sender === "user"
+                            ? "bg-[#AED6F1] text-black"
+                            : "bg-[#EAE9E9]"
+                        } p-2 rounded-xl`}
+                      >
+                        <ReactMarkdown>{msg.content}</ReactMarkdown>
+                        {msg.sender === "bot" && !msg.fullyTyped && (
+                          <span className="inline-block w-1 h-4 bg-black animate-blink" />
+                        )}
+                      </div>
+                      {msg.fullyTyped && msg.timestamp && (
+                        <div
+                          className={`flex items-center mt-1 text-xs text-gray-500 ${
+                            msg.sender === "user"
+                              ? "justify-end"
+                              : "justify-start"
+                          }`}
+                        >
+                          <span>
+                            {msg.timestamp.toLocaleTimeString([], {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            })}
+                          </span>
+                          {msg.sender === "user" && (
+                            <img
+                              src="/double-tick.svg"
+                              alt="Read"
+                              className="w-4 h-4 ml-1"
+                            />
+                          )}
+                        </div>
+                      )}
+                    </div>
                   </div>
-                )}
-                {msg.sender === "user" && (
-                  <FaUser className="ml-2 mt-1 text-green-500" />
                 )}
               </div>
             ))}

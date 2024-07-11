@@ -10,6 +10,7 @@ interface Message {
   content: string;
   fullyTyped: boolean;
   options?: string[];
+  timestamp?: Date;
 }
 
 export default function SimpleChat() {
@@ -24,11 +25,12 @@ export default function SimpleChat() {
       sender: "bot",
       content: "Which of the following life goals would you like to plan for?",
       fullyTyped: false,
+      timestamp: new Date(),
     },
     {
-        sender: "bot",
-        content: "",
-        fullyTyped: true,
+      sender: "bot",
+      content: "",
+      fullyTyped: true,
     },
     {
       sender: "button",
@@ -44,32 +46,38 @@ export default function SimpleChat() {
       fullyTyped: true,
     },
     {
-        sender: "user",
-        content: "",
-        fullyTyped: true,
+      sender: "user",
+      content: "",
+      fullyTyped: true,
+      timestamp: new Date(),
     },
     {
       sender: "bot",
-      content: "Which year do you wish to retire at?",
+      content: "What age do you wish to retire at?",
       fullyTyped: false,
+      timestamp: new Date(),
     },
     { sender: "user", content: "", fullyTyped: true },
     {
       sender: "bot",
-      content: "Understood. Let me help you think through your retirement plan in a methodical way. I understand from the banking info that your current age is 35. Additionally your current monthly expenditure is about 1.2 lakh. Assuming an inflation rate of 6% per annum this would mean 4 lakh rs per month after 23 years at the time of your retirement. Furthermore, assuming a conservative post retirement portfolio return of only 8% per annum this would require a Corpus of 6 crore rupees for your retirement. Now in order to achieve 6 crore rupees of Corpus at the age of 58 let us see how you need to invest starting today to reach this goal. I understand you already have a Corpus of 1.2 crores as of today. Assuming a blended rate of return of about 12% per annum for next 23 years, the current Corpus itself will grow to 2.5 crores. Hence you need to additionally create 3.5 crores of Corpus through new sip's. At the blended rate of return of 12% per annum this would require you to create an SIP investment of 70k rupees per month to reach this goal. You may follow the recommended asset allocation for this 70k rupees investment per month. Wish you all the best for your retirement plan! If you wish I can help you execute this SIP as per your recommended asset allocation. Do you wish to execute it now?",
+      content:
+        "Understood. Let me help you think through your retirement plan in a methodical way. I understand from the banking info that your current age is 35. Additionally your current monthly expenditure is about 1.2 lakh. Assuming an inflation rate of 6% per annum this would mean 4 lakh rs per month after 23 years at the time of your retirement. Furthermore, assuming a conservative post retirement portfolio return of only 8% per annum this would require a Corpus of 6 crore rupees for your retirement. Now in order to achieve 6 crore rupees of Corpus at the age of 58 let us see how you need to invest starting today to reach this goal. I understand you already have a Corpus of 1.2 crores as of today. Assuming a blended rate of return of about 12% per annum for next 23 years, the current Corpus itself will grow to 2.5 crores. Hence you need to additionally create 3.5 crores of Corpus through new sip's. At the blended rate of return of 12% per annum this would require you to create an SIP investment of 70k rupees per month to reach this goal. You may follow the recommended asset allocation for this 70k rupees investment per month. Wish you all the best for your retirement plan! If you wish I can help you execute this SIP as per your recommended asset allocation. Do you wish to execute it now?",
       fullyTyped: false,
+      timestamp: new Date(),
     },
-    { sender: "user", content: "", fullyTyped: true },
+    { sender: "user", content: "", fullyTyped: true, timestamp: new Date() },
     {
       sender: "bot",
       content: "Is there anything else I can help you with?",
       fullyTyped: false,
+      timestamp: new Date(),
     },
-    { sender: "user", content: "", fullyTyped: true },
+    { sender: "user", content: "", fullyTyped: true, timestamp: new Date() },
     {
       sender: "bot",
       content: "Alright! Navigating you back to the Home Screen...",
       fullyTyped: false,
+      timestamp: new Date(),
     },
   ];
 
@@ -128,7 +136,9 @@ export default function SimpleChat() {
           clearInterval(interval);
           setMessages((prev) =>
             prev.map((msg, index) =>
-              index === prev.length - 1 ? { ...msg, fullyTyped: true } : msg
+              index === prev.length - 1
+                ? { ...msg, fullyTyped: true, timestamp: new Date() }
+                : msg
             )
           );
           resolve();
@@ -140,7 +150,12 @@ export default function SimpleChat() {
   const handleUserInput = (input: string) => {
     setMessages((prev) => [
       ...prev,
-      { sender: "user", content: input, fullyTyped: true },
+      {
+        sender: "user",
+        content: input,
+        fullyTyped: true,
+        timestamp: new Date(),
+      },
     ]);
     setUserInput("");
     setCurrentStep((prev) => prev + 1);
@@ -153,7 +168,20 @@ export default function SimpleChat() {
   return (
     <div className="fixed inset-0 flex flex-col">
       <HeaderChat />
-      <div className="flex-1 bg-white flex flex-col p-4 overflow-hidden">
+      <div className="flex-1 bg-gray-100 flex flex-col p-4 overflow-hidden">
+        <div className="flex items-center justify-start">
+          <img
+            src="/robo_icon.png"
+            width={100}
+            height={100}
+            alt="Robo Icon"
+            className="rounded-full"
+          />
+          <div>
+            <h1 className="font-bold text-2xl">J.A.R.V.I.S</h1>
+            <p>Personal AI Assistant</p>
+          </div>
+        </div>
         <div className="flex-1 overflow-y-auto mb-16 space-y-4">
           {messages.map((msg, index) => (
             <div
@@ -162,18 +190,15 @@ export default function SimpleChat() {
                 msg.sender === "bot" || msg.sender === "button"
                   ? "justify-start"
                   : "justify-end"
-              }`}
+              } w-full`}
             >
-              {msg.sender === "bot" && (
-                <FaRobot className="mr-2 mt-1 text-blue-500" />
-              )}
               {msg.sender === "button" && (
                 <div className="flex flex-col space-y-2 max-w-[70%]">
                   {msg.options!.map((option, i) => (
                     <button
                       key={i}
                       onClick={() => handleButtonClick(option)}
-                      className="p-2 ml-5 rounded-xl bg-white text-black border border-gray-300 hover:bg-[#EF5350] hover:text-white text-left w-auto"
+                      className="p-2 ml-1 rounded-2xl bg-white text-[#9B1E26] border border-[#9B1E26] hover:bg-[#9B1E26] hover:text-white text-left w-auto"
                     >
                       {option}
                     </button>
@@ -181,21 +206,28 @@ export default function SimpleChat() {
                 </div>
               )}
               {(msg.sender === "bot" || msg.sender === "user") && (
-                <div
-                  className={`max-w-[70%] ${
-                    msg.sender === "user"
-                      ? "bg-[#EF5350] text-white p-2 rounded-xl"
-                      : "bg-gray-100 p-2 rounded-xl"
-                  }`}
-                >
-                  {msg.content}
-                  {msg.sender === "bot" && !msg.fullyTyped && (
-                    <span className="inline-block w-1 h-4 bg-black animate-blink" />
+                <div className="flex flex-col max-w-[70%]">
+                  <div
+                    className={`${
+                      msg.sender === "user"
+                        ? "bg-[#AED6F1] text-black"
+                        : "bg-[#EAE9E9]"
+                    } p-2 rounded-xl`}
+                  >
+                    {msg.content}
+                    {msg.sender === "bot" && !msg.fullyTyped && (
+                      <span className="inline-block w-1 h-4 bg-black animate-blink" />
+                    )}
+                  </div>
+                  {msg.fullyTyped && msg.timestamp && (
+                    <div className={`flex items-center mt-1 text-xs text-gray-500 ${msg.sender === "user" ? "justify-end" : "justify-start"}`}>
+                      <span>{msg.timestamp.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+                      {msg.sender === "user" && (
+                        <img src="/double-tick.svg" alt="Read" className="w-4 h-4 ml-1" />
+                      )}
+                    </div>
                   )}
                 </div>
-              )}
-              {msg.sender === "user" && (
-                <FaUser className="ml-2 mt-1 text-green-500" />
               )}
             </div>
           ))}
